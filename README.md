@@ -7,3 +7,5 @@
 ​	3.包括用于训练细粒度识别的VIT模型
 
 ​	4.使用的诸如LLaMa-Factory；Mix-instructV2；YOLO系列工具
+
+​	5.包括经过微调后的模型
