@@ -9,3 +9,7 @@
 ​	4.使用的诸如LLaMa-Factory；Mix-instructV2；YOLO系列工具
 
 ​	5.包括经过微调后的模型
+
+
+
+微调后的模型可以在此下载：https://pan.baidu.com/s/1MybxSaOkV-cpO2rh8KAT3g?pwd=88dn 提取码: 88dn
