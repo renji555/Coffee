@@ -15,3 +15,12 @@
 
 
 微调后的模型可以在此下载：https://pan.baidu.com/s/1MybxSaOkV-cpO2rh8KAT3g?pwd=88dn 提取码: 88dn
+
+### 第三方代码引用
+本项目基于以下开源代码进行调整：
+
+1. **大模型生成效果评价**  
+   - 来源：LLM-Blender (https://github.com/yuchenlin/LLM-Blender)  
+   - 原作者："Jiang, Dongfu and Ren, Xiang and Lin, Bill Yuchen"  
+   - 许可证：MIT License  
+   - 使用位置：`compare/compare_util` 与`compare/blender.py`
