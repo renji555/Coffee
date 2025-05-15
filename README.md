@@ -22,5 +22,5 @@
 1. **大模型生成效果评价**  
    - 来源：LLM-Blender (https://github.com/yuchenlin/LLM-Blender)  
    - 原作者："Jiang, Dongfu and Ren, Xiang and Lin, Bill Yuchen"  
-   - 许可证：MIT License  
+   - 许可证： Apache-2.0 license  
    - 使用位置：`compare/compare_util` 与`compare/blender.py`
