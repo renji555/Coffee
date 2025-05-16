@@ -16,11 +16,19 @@
 
 微调后的模型可以在此下载：https://pan.baidu.com/s/1MybxSaOkV-cpO2rh8KAT3g?pwd=88dn 提取码: 88dn
 
+使用的单个咖啡豆与多咖啡豆数据集可在此下载
+
+## Tools
+
+   1. transform.py: 将所有图片转换为png格式
+   
+   2. rerank.py: 将所有图片重新排序，为coffee0001、coffee0002......
+
 ### 第三方代码引用
 本项目基于以下开源代码进行调整：
 
 1. **大模型生成效果评价**  
    - 来源：LLM-Blender (https://github.com/yuchenlin/LLM-Blender)  
    - 原作者："Jiang, Dongfu and Ren, Xiang and Lin, Bill Yuchen"  
-   - 许可证： Apache-2.0 license  
+   - 许可证：MIT License  
    - 使用位置：`compare/compare_util` 与`compare/blender.py`
