@@ -16,8 +16,8 @@
 
 微调后的模型可以在此下载：https://pan.baidu.com/s/1MybxSaOkV-cpO2rh8KAT3g?pwd=88dn 提取码: 88dn
 
-使用的单个咖啡豆与多咖啡豆数据集可在此下载：
-: https://pan.baidu.com/s/1rrl3fdrfnqLafUL0YwKVaQ?pwd=f6wc 提取码: f6wc
+使用的单个咖啡豆与多咖啡豆数据集，以及经过labelImg标注的图片信息可在此下载：
+链接: https://pan.baidu.com/s/1O1TR5oAFZ6Gc-mm72ajTvg?pwd=cuhj 提取码: cuhj
 
 ## Tools
 
