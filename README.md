@@ -19,6 +19,9 @@
 使用的单个咖啡豆与多咖啡豆数据集，以及经过labelImg标注的图片信息可在此下载：
 链接: https://pan.baidu.com/s/1O1TR5oAFZ6Gc-mm72ajTvg?pwd=cuhj 提取码: cuhj
 
+咖啡豆识别的yolo参数可以参考：
+链接: https://pan.baidu.com/s/1bc62B85u4-jY3k_PMXeYDw?pwd=c8gd 提取码: c8gd
+
 ## Tools
 
    1. transform.py: 将所有图片转换为png格式
