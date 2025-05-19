@@ -31,13 +31,19 @@
 
 # DEMO
 
- 1. 实现摄像头获取图片并识别，具体方式见下面视频
+  1. 实现摄像头获取图片并识别，具体方式见下面视频
 
- 2. 实现咖啡对话模型，具体见下视频
+<video src="/Users/renhongyi/Documents/GitHub/Coffee/photo/识别.mov"></video>
 
- 3. 参数输入界面，咱未能与控制板通信，故无法演示，只有一张示意图
+2. 实现咖啡对话模型，具体见下视频
 
-    ![img1](./photo/img1.png)
+<video src="/Users/renhongyi/Documents/GitHub/Coffee/photo/对话.mov"></video>
+
+
+
+3. 参数输入界面，咱未能与控制板通信，故无法演示，只有一张示意图
+
+![img1](./photo/img1.png)
 
 ### 第三方代码引用
 
