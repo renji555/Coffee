@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOLO检测系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36D399',
+                        accent: '#F59E0B',
+                        danger: '#F87272',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .camera-container {
+                @apply relative overflow-hidden rounded-xl shadow-lg bg-dark/80;
+            }
+            .camera-overlay {
+                @apply absolute inset-0 bg-gradient-to-t from-dark/70 via-dark/30 to-transparent pointer-events-none;
+            }
+            .control-button {
+                @apply px-6 py-3 rounded-lg flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50;
+            }
+            .result-item {
+                @apply p-3 rounded-lg mb-3 border border-gray-200 bg-white;
+            }
+            .glass-effect {
+                @apply bg-white/90 backdrop-blur-sm;
+            }
+            .card-hover {
+                @apply transition-all duration-200 hover:shadow-md;
+            }
+        }
+    </style>
+</head>
+
+<body class="font-inter bg-gray-50 min-h-screen text-dark">
+    <!-- 顶部导航 -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-effect shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-eye text-primary text-xl"></i>
+                <h1 class="text-lg font-bold text-dark">YOLO检测系统</h1>
+            </div>
+            <nav class="hidden md:flex items-center space-x-4">
+                <button onclick="window.location.href='main.html'" class="px-3 py-1.5 bg-primary/10 text-primary rounded-md text-sm font-medium hover:bg-primary/20 transition-colors">
+                    检测中心
+                </button>
+                <button onclick="window.location.href='chat.html'" class="px-3 py-1.5 bg-primary/10 text-primary rounded-md text-sm font-medium hover:bg-primary/20 transition-colors">
+                    模型对话
+                </button>
+                <a href="#" class="font-medium text-primary text-sm">设置参数</a>
+            </nav>
+            <div class="flex items-center space-x-3">
+                <button class="md:hidden text-dark text-xl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="relative">
+                    <img src="https://picsum.photos/id/1005/100/100" alt="用户头像" class="w-8 h-8 rounded-full object-cover border border-primary">
+                </div>
+            </div>
+        </div>
+    </header>
+</body>
+<!-- 参数输入区域 -->
+<section class="container mx-auto px-4 py-8 md:py-12">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-bold text-dark mb-6">检测参数设置</h2>
+        
+        <!-- 粒径参数 -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+                粒径参数 (mm)
+            </label>
+            <input type="number" step="0.1" min="0" max="100" 
+                   class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-primary focus:border-primary border-gray-300">
+        </div>
+
+        <!-- 冲泡时间 -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+                冲泡时间 (分钟)
+            </label>
+            <input type="number" min="1" max="60" 
+                   class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-primary focus:border-primary border-gray-300">
+        </div>
+
+        <!-- 冲泡温度 -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+                冲泡温度 (℃)
+            </label>
+            <input type="number" min="0" max="100" 
+                   class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-primary focus:border-primary border-gray-300">
+        </div>
+
+        <!-- 提交按钮 -->
+        <button class="w-full bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/80 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50">
+            应用参数
+        </button>
+    </div>
+</section>
+</html>

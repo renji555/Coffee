@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOLO检测系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36D399',
+                        accent: '#F59E0B',
+                        danger: '#F87272',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .camera-container {
+                @apply relative overflow-hidden rounded-xl shadow-lg bg-dark/80;
+            }
+            .camera-overlay {
+                @apply absolute inset-0 bg-gradient-to-t from-dark/70 via-dark/30 to-transparent pointer-events-none;
+            }
+            .control-button {
+                @apply px-6 py-3 rounded-lg flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50;
+            }
+            .result-item {
+                @apply p-3 rounded-lg mb-3 border border-gray-200 bg-white;
+            }
+            .glass-effect {
+                @apply bg-white/90 backdrop-blur-sm;
+            }
+            .card-hover {
+                @apply transition-all duration-200 hover:shadow-md;
+            }
+            .chat-message {
+                @apply animate-fade-in-up;
+            }
+            .animate-fade-in-up {
+                animation: fadeInUp 0.3s ease forwards;
+            }
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+    </style>
+</head>
+
+<body class="font-inter bg-gray-50 min-h-screen text-dark">
+    <!-- 顶部导航 -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-effect shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-eye text-primary text-xl"></i>
+                <h1 class="text-lg font-bold text-dark">YOLO检测系统</h1>
+            </div>
+            <nav class="hidden md:flex items-center space-x-4">
+                <button onclick="window.location.href='main.html'" class="px-3 py-1.5 bg-primary/10 text-primary rounded-md text-sm font-medium hover:bg-primary/20 transition-colors">
+                    检测中心
+                </button>
+                <a href="#" class="font-medium text-primary text-sm">模型对话</a>
+                <button onclick="window.location.href='settings.html'" class="px-3 py-1.5 bg-primary/10 text-primary rounded-md text-sm font-medium hover:bg-primary/20 transition-colors">
+                    设置参数
+                </button>
+            </nav>
+            <div class="flex items-center space-x-3">
+                <button class="md:hidden text-dark text-xl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="relative">
+                    <img src="https://picsum.photos/id/1005/100/100" alt="用户头像" class="w-8 h-8 rounded-full object-cover border border-primary">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 大模型对话框 -->
+    <div class="fixed top-20 left-1/2 -translate-x-1/2 max-w-3xl w-full bg-white rounded-lg shadow-lg p-4 glass-effect">
+        <!-- 历史记录框 -->
+        <div id="chat-history" class="h-64 overflow-y-auto px-4 py-2 space-y-4">
+            <!-- 历史消息示例，可通过 JavaScript 动态添加 -->
+            <div class="flex space-x-3 chat-message">
+                <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary">🤖</div>
+                <div class="flex-1 bg-gray-100 rounded-lg p-3">你好！这里是ZJU_CSE_SRTP小组</div>
+            </div>
+            <div class="flex space-x-3 chat-message">
+                <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">👤</div>
+                <div class="flex-1 bg-white rounded-lg p-3 border border-gray-200">这是经过训练后的咖啡知识大模型，欢迎提问！</div>
+            </div>
+        </div>
+
+        <!-- 输入区域 -->
+        <div class="flex mt-4 space-x-3 px-4">
+            <input type="text" id="user-input" class="flex-1 p-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-primary/50" placeholder="请输入你的问题...">
+            <button id="chat-button" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition-colors" onclick="handleChat()">
+                发送
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 处理聊天功能
+        async function handleChat() {
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value.trim();
+            
+            if (!message) return;
+            
+            // 添加用户消息到对话历史
+            addMessageToHistory(message, 'user');
+            
+            // 清空输入框
+            userInput.value = '';
+            
+            // 添加加载状态
+            const loadingId = addLoadingIndicator();
+            
+            try {
+                // 调用后端API
+                const response = await fetch('http://localhost:8000/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message }),
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // 移除加载状态
+                removeLoadingIndicator(loadingId);
+                
+                // 添加AI回复到对话历史
+                addMessageToHistory(data.reply, 'ai');
+                
+            } catch (error) {
+                console.error('Error calling chat API:', error);
+                // 移除加载状态
+                removeLoadingIndicator(loadingId);
+                // 显示错误消息
+                addMessageToHistory('抱歉，发生了错误，请稍后再试。', 'error');
+            }
+        }
+        
+        // 添加消息到历史记录
+        function addMessageToHistory(message, type) {
+            const chatHistory = document.getElementById('chat-history');
+            let avatar, bgClass;
+            
+            if (type === 'user') {
+                avatar = '👤';
+                bgClass = 'bg-white rounded-lg p-3 border border-gray-200';
+            } else if (type === 'ai') {
+                avatar = '🤖';
+                bgClass = 'bg-gray-100 rounded-lg p-3';
+            } else { // error
+                avatar = '⚠️';
+                bgClass = 'bg-red-50 rounded-lg p-3 border border-red-200 text-red-700';
+            }
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex space-x-3 chat-message';
+            messageDiv.innerHTML = `
+                <div class="w-10 h-10 ${type === 'user' ? 'bg-gray-200' : 'bg-primary/10'} rounded-full flex items-center justify-center text-${type === 'user' ? 'gray-600' : 'primary'}">${avatar}</div>
+                <div class="flex-1 ${bgClass}">${message}</div>
+            `;
+            
+            chatHistory.appendChild(messageDiv);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+        
+        // 添加加载指示器
+        function addLoadingIndicator() {
+            const chatHistory = document.getElementById('chat-history');
+            const loadingId = 'loading-' + Date.now();
+            
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'flex space-x-3 chat-message';
+            loadingDiv.id = loadingId;
+            loadingDiv.innerHTML = `
+                <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary">🤖</div>
+                <div class="flex-1 bg-gray-100 rounded-lg p-3">
+                    <div class="animate-pulse flex space-x-2">
+                        <div class="h-2 bg-gray-400 rounded-full w-4"></div>
+                        <div class="h-2 bg-gray-400 rounded-full w-4"></div>
+                        <div class="h-2 bg-gray-400 rounded-full w-4"></div>
+                    </div>
+                </div>
+            `;
+            
+            chatHistory.appendChild(loadingDiv);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+            
+            return loadingId;
+        }
+        
+        // 移除加载指示器
+        function removeLoadingIndicator(loadingId) {
+            const loadingDiv = document.getElementById(loadingId);
+            if (loadingDiv) {
+                loadingDiv.remove();
+            }
+        }
+        
+        // 支持按Enter键发送消息
+        document.getElementById('user-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleChat();
+            }
+        });
+    </script>
+</body>
+</html>
